@@ -46,8 +46,41 @@ services:
     container_name: mediamtx
     restart: unless-stopped
     ports:
-      - "${MEDIAMTX_PORT}:8554"   # RTSP
-      - "${MEDIAMTX_HLS_PORT}:8888"
-      - "${MEDIAMTX_WEBRTC_PORT}:8443"
+      - "${MEDIAMTX_PORT}:8554"         # RTSP
+      - "${MEDIAMTX_HLS_PORT}:8888"     # HLS
+      - "${MEDIAMTX_WEBRTC_PORT}:8889"  # FIX: WebRTC port 8443 -> 8889 (sesuai mediamtx.yml)
+      - "8189:8189/udp"                 # WebRTC local UDP
+      - "8189:8189/tcp"                 # WebRTC local TCP
+      - "8890:8890/udp"                 # SRT
+      - "9997:9997"                     # Control API
+      - "9998:9998"                     # Metrics
     volumes:
       - ./data/mediamtx:/var/mediamtx
+    command: /var/mediamtx/mediamtx.yml
+
+
+#  mediamtx:
+#    image: bluenviron/mediamtx
+#    container_name: mediamtx
+#    restart: unless-stopped
+#    ports:
+#      - "${MEDIAMTX_PORT}:8554"
+#      - "${MEDIAMTX_HLS_PORT}:8888"
+#      - "${MEDIAMTX_WEBRTC_PORT}:8443"
+#    volumes:
+#      - ./data/mediamtx:/var/mediamtx
+#    command: /var/mediamtx/mediamtx.yml
+
+
+#  mediamtx:
+#    image: bluenviron/mediamtx
+#    container_name: mediamtx
+#    restart: unless-stopped
+#    ports:
+#      - "${MEDIAMTX_PORT}:8554"   # RTSP
+#      - "${MEDIAMTX_HLS_PORT}:8888"
+#      - "${MEDIAMTX_WEBRTC_PORT}:8443"
+#    volumes:
+#      - ./data/mediamtx:/var/mediamtx
+#    command:
+#      - ./data/mediamtx/mediamtx.yml
